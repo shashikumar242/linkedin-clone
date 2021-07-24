@@ -19,7 +19,7 @@ const Login = (props) => {
         </Hero>
         <Form>
           <Google>
-            <img src="/images/google.svg" />
+            <img src="/images/google.svg" alt="" />
             Sign in with Google
           </Google>
         </Form>
