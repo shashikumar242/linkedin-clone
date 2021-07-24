@@ -5,7 +5,8 @@ const Main = () => {
   return (
     <div>
       <Container>
-        <h1>main</h1>
+        <ShareBox>share</ShareBox>
+        
       </Container>
     </div>
   );
@@ -16,5 +17,18 @@ const Main = () => {
 const Container = styled.div`
   grid-area: main;
 `;
+
+const CommonCard = styled.div`
+    
+    
+
+`;
+
+const ShareBox = styled(CommonCard)`
+  
+`;
+
+
+
 
 export default Main;
