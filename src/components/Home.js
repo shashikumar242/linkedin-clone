@@ -5,42 +5,43 @@ import Main from "./Main";
 import Rightside from "./Rightside";
 
 const Home = () => {
-  return(
+  return (
     <div>
       <Container>
         <Section>
-          <h5><a>Hiring in a hurry? -</a></h5>
-          <p>Find talented pros in record time with upwork and keep bussiness
+          <h5>
+            <a>Hiring in a hurry? -</a>
+          </h5>
+          <p>
+            Find talented pros in record time with upwork and keep bussiness
             moving.
           </p>
         </Section>
         <Layout>
-             <Leftside/>
-             <Main/>
-             <Rightside/>
-          </Layout>
+          <Leftside />
+          <Main />
+          <Rightside />
+        </Layout>
       </Container>
     </div>
-  )
-}
-
+  );
+};
 
 // styled-components
 
 const Container = styled.div`
-         padding-top: 52px;
+  padding-top: 52px;
   max-width: 100%;
-
 `;
 
-const Content  = styled.div`
-    max-width: 1128px;
+const Content = styled.div`
+  max-width: 1128px;
   margin-left: auto;
   margin-right: auto;
 `;
 
 const Section = styled.section`
-    min-height: 50px;
+  min-height: 50px;
   padding: 16px 0;
   box-sizing: content-box;
   text-align: center;
@@ -65,7 +66,6 @@ const Section = styled.section`
   }
 `;
 
-
 const Layout = styled.div`
   display: grid;
   grid-template-areas: "leftside main rightside";
@@ -79,9 +79,6 @@ const Layout = styled.div`
     flex-direction: column;
     padding: 0 5px;
   }
-
 `;
 
 export default Home;
-
-

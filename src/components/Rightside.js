@@ -4,45 +4,48 @@ import styled from "styled-components";
 const Rightside = () => {
   return (
     <div>
-      <Container>   
-      <FollowCard>
-      <Title>
-        <h2>Add to your feed</h2>
-        <img src="/images/feed-icon.svg" alt=""></img>
-      </Title>
+      <Container>
+        <FollowCard>
+          <Title>
+            <h2>Add to your feed</h2>
+            <img src="/images/feed-icon.svg" alt=""></img>
+          </Title>
 
-      <FeedList>
-        <li>
-           <a>
-           <span><Avatar/></span>
-           </a>
-           <div>
-             <span>#Linkedin</span>
-             <button>Follow</button>
-           </div>
-        </li>
+          <FeedList>
+            <li>
+              <a>
+                <span>
+                  <Avatar />
+                </span>
+              </a>
+              <div>
+                <span>#Linkedin</span>
+                <button>Follow</button>
+              </div>
+            </li>
 
-        <li>
-           <a>
-           <span><Avatar/></span>
-           </a>
-           <div>
-             <span>#Video</span>
-             <button>Follow</button>
-           </div>
+            <li>
+              <a>
+                <span>
+                  <Avatar />
+                </span>
+              </a>
+              <div>
+                <span>#Video</span>
+                <button>Follow</button>
+              </div>
+            </li>
+          </FeedList>
 
-        </li>
-      </FeedList>
+          <Recommendation>
+            view all the recommendations
+            <img src="/images/right-icon.svg" alt=""></img>
+          </Recommendation>
+        </FollowCard>
 
-      <Recommendation>
-        view all the recommendations
-        <img src="/images/right-icon.svg" alt=""></img>
-      </Recommendation>
-      </FollowCard>
-
-      <BannerCard>
-        <img src="/images/jobs-ad.jpg" alt=""></img>
-      </BannerCard>
+        <BannerCard>
+          <img src="/images/jobs-ad.jpg" alt=""></img>
+        </BannerCard>
       </Container>
     </div>
   );
@@ -54,7 +57,7 @@ const Container = styled.div`
   grid-area: Rightside;
 `;
 
-const FollowCard  = styled.div`
+const FollowCard = styled.div`
   text-align: center;
   overflow: hidden;
   margin-bottom: 8px;
@@ -66,8 +69,7 @@ const FollowCard  = styled.div`
   padding: 12px;
 `;
 
-
-const Title  = styled.div`
+const Title = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -75,7 +77,6 @@ const Title  = styled.div`
   width: 100%;
   color: rgba(0, 0, 0, 0.6);
 `;
-
 
 const FeedList = styled.ul`
   margin-top: 16px;
@@ -106,23 +107,20 @@ const FeedList = styled.ul`
       outline: none;
     }
   }
-
 `;
 
- const Avatar = styled.div`
-  background-image: url("https://static-exp1.licdn.com/sc/h/1b4vl1r54ijmrmcyxzoidwmxs");  // hashtag icon
+const Avatar = styled.div`
+  background-image: url("https://static-exp1.licdn.com/sc/h/1b4vl1r54ijmrmcyxzoidwmxs"); // hashtag icon
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   width: 48px;
   height: 48px;
   margin-right: 8px;
-  
- `;
-
+`;
 
 const Recommendation = styled.a`
-   color: #0a66c2;
+  color: #0a66c2;
   display: flex;
   align-items: center;
   font-size: 14px;
