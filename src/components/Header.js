@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import {connect} from 'react-redux';
+import { signOutAPI } from "../actions";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <Container>
       <Content>
@@ -57,12 +59,23 @@ const Header = () => {
 
             <User>
               <a>
-                <img src="/images/user.svg" alt=""></img>
-                <span>Me</span>
-                <img src="/images/down-icon.svg" alt=""></img>
+
+              { 
+                 props.user && props.user.photoURL ?  (        // if user exist and user photo exists - render image according to ternary condition
+                  <img src={props.user.photoURL} alt=""></img>
+                 ) :  ( 
+                 <img src="/images/user.svg" alt=""></img> 
+                 )
+              
+              }
+                <span>
+                  Me
+                  <img src="/images/down-icon.svg" alt=""></img>
+                  </span>
+              
               </a>
 
-              <SignOut>
+              <SignOut onClick={()=> props.signOut()}>
                 <a>Sign Out</a>
                 </SignOut>
 
@@ -257,4 +270,17 @@ const Work = styled(User)`          // borrowing styling from User
 
 
 
-export default Header;
+
+
+
+const mapStateToProps = (state)=>{
+  return {
+    user:state.userState.user
+  }
+};
+
+const mapDispatchToProps = (dispatch)=> ({
+   signOut:()=>dispatch(signOutAPI())
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);
