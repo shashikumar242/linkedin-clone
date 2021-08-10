@@ -4,9 +4,9 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import {connect} from "react-redux"; 
 import firebase from "firebase";
-import {postArticleAPI} from "../actions"
+import {postArticleAPI} from "../actions"; 
 
-
+ 
 
 const PostModal = (props) => {
   const [editorText, setEditorText] = useState(""); // textarea input
@@ -17,6 +17,7 @@ const PostModal = (props) => {
   // handle  -- choose file to create a post
   const handleChange = (e) => {
     const image = e.target.files[0];
+     console.log('handle--changee',e)
 
     if (image === "" || image === undefined) {
       alert(`not an image, the file is a ${typeof image}`);
@@ -27,8 +28,8 @@ const PostModal = (props) => {
   };
 
   const switchAssetArea  = (area)=>{
-        setShareImage();
-        setVideoLink();
+        setShareImage("");
+        setVideoLink("");
         setAssetArea(area);
 
 
@@ -51,7 +52,7 @@ const PostModal = (props) => {
           description:editorText,
           timestamp:firebase.firestore.Timestamp.now(), 
       }
-
+           console.log('Entered in postModal --- in postArticle',payload);
       props.postArticle(payload)
        reset(e);
   }
@@ -66,7 +67,8 @@ const PostModal = (props) => {
     setAssetArea("");
     props.handleClick(e);
   };
-
+        
+  console.log('userrrrrrrrrr-photoooo',props.user)
   return (
     <>
       {props.showModal === "open" && (
@@ -78,7 +80,7 @@ const PostModal = (props) => {
                 <img src="/images/close-icon.png"></img>
               </button>
             </Header>
-
+                  
             <SharedContent>
               <UserInfo>
                   {props.user.photoURL ?  (
@@ -86,9 +88,9 @@ const PostModal = (props) => {
                   )  : (
                 <img src="/images/user.svg" alt=""></img>
                   )}
-                <span>Name</span>
+                <span>{props.user.displayName}</span>
               </UserInfo>
-
+                
               <Editor>
                 <textarea
                   value={editorText}
@@ -106,13 +108,17 @@ const PostModal = (props) => {
                     id="file"
                     style={{display:"none"}}
                     onChange={handleChange}
-                    ></input>
+                    />
 
-                    <p>
-                        <label htmlFor="file">Select image to share</label>
+                   <p>
+                        <label htmlFor="file">Click here to select Image</label>
                     </p>
 
-                    {shareImage && <img src={URL.createObjectURL(shareImage)}></img>}
+                    {shareImage &&   (
+
+                       <img src={URL.createObjectURL(shareImage)}/>
+                            
+                    )}
 
                     </UploadImage> 
                     
@@ -120,7 +126,7 @@ const PostModal = (props) => {
                     )     :   (
                     
                     assetArea  === "media"  &&  (
-                    <React.Fragment>
+                    <>
 
 
                     <input type="text"
@@ -133,7 +139,7 @@ const PostModal = (props) => {
                          <ReactPlayer width={"100%"} url={videoLink}   />
                      )}
                    
-                    </React.Fragment>
+                    </>
 
                     )
 
@@ -148,7 +154,7 @@ const PostModal = (props) => {
 
             <ShareCreation>
               <AttachAssets>
-                <AssetButton onClick={()=>switchAssetArea("image")}>
+                <AssetButton onClick={()=>switchAssetArea("image")}>              
                   <img src="/images/share-image.png"></img>
                 </AssetButton>
  
@@ -336,6 +342,12 @@ const Editor = styled.div`
 
 const UploadImage = styled.div`
      text-align: center;
+     p:hover{
+        border:1px solid black;
+       cursor:pointer;
+        padding:1px;
+        margin:1px;
+     }
      img{
          width: 100%;
      }
@@ -345,13 +357,13 @@ const UploadImage = styled.div`
 
 
 const mapStateToProps = (state)=>{
-    return {
+    return {                                        
       user:state.userState.user,
     }
   };
   
   const mapDispatchToProps = (dispatch)=> ({
-           postArticle: (payload)=>dispatch(postArticleAPI(payload))
+           postArticle: (payload)=>dispatch(postArticleAPI(payload)),
   });
   
   export default connect(mapStateToProps,mapDispatchToProps)(PostModal);

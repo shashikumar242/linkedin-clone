@@ -1,143 +1,168 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import PostModal from './PostModal';
+import ReactPlayer from "react-player";
+import PostModal from "./PostModal";
+import { connect } from "react-redux";
+import { getArticleAPI } from "../actions";
 
 
+const Main = (props) => {
+  console.log("Main----Componentttt", props);
+  const [showModal, setShowModal] = useState("close");
 
+  useEffect(() => {
+    props.getArticles();
+  }, []);
 
-
-const Main = () => {
-  const[showModal,setShowModal] =  useState("close");
-
-  const handleClick=(e)=>{
+  const handleClick = (e) => {
     e.preventDefault();
-    if(e.target !== e.currentTarget){
+    if (e.target !== e.currentTarget) {
       return;
     }
 
-    switch(showModal){
-        
-      case "open" :
-         setShowModal("close")
-         break;
-
-      case "close" :
-        setShowModal("open")
+    switch (showModal) {
+      case "open":
+        setShowModal("close");
         break;
 
-        default :
-        setShowModal("close")
+      case "close":
+        setShowModal("open");
+        break;
+
+      default:
+        setShowModal("close");
         break;
     }
-  }
-
+  };
 
   return (
-    
-      <Container>
-        <ShareBox>
-          <div>
-            <img src="/images/user.svg" alt=""></img>
-            <button onClick={handleClick}>Start a post</button>
-          </div>
+    <>
+      {props.articles.length === 0 ? (
+        <p>There is no articles</p>
+      ) : (
+        <Container>
+          <ShareBox>
+            <div>
+              {props.user && props.user.photoURL ? (
+                <img src={props.user.photoURL}></img>
+              ) : (
+                <img src="/images/user.svg" alt=""></img>
+              )}
 
-          <div>
-            <button>
-              <img src="/images/photo-icon.png" alt=""></img>
-              <span>Photo</span>
-            </button>
+              <button
+                onClick={handleClick}
+                disabled={props.loading ? true : false}
+              >
+                Start a post
+              </button>
+            </div>
 
-            <button>
-              <img src="/images/video-icon.png" alt=""></img>
-              <span>Video</span>
-            </button>
+            <div>
+              <button>
+                <img src="/images/photo-icon.png" alt=""></img>
+                <span>Photo</span>
+              </button>
 
-            <button>
-              <img src="/images/event-icon.png" alt=""></img>
-              <span>Event</span>
-            </button>
+              <button>
+                <img src="/images/video-icon.png" alt=""></img>
+                <span>Video</span>
+              </button>
 
-            <button>
-              <img src="/images/article-icon.png" alt=""></img>
-              <span>write article</span>
-            </button>
-          </div>
-        </ShareBox>
-         
-         <div>
-           <Article>
+              <button>
+                <img src="/images/event-icon.png" alt=""></img>
+                <span>Event</span>
+              </button>
+
+              <button>
+                <img src="/images/article-icon.png" alt=""></img>
+                <span>write article</span>
+              </button>
+            </div>
+          </ShareBox>
+          <Content>
+            {props.loading && <img src="/images/spin-loader.svg"></img>}
+
+            {props.articles.length > 0 &&
+              props.articles.map((article, key) => (
+                <Article key={key}>
                   <SharedActor>
-
-
-                    <a> 
-                      <img src="/images/user.svg" alt=""></img>
+                    <a>
+                      <img src={article.actor.image} alt=""></img>
                       <div>
-                       <span>Titile</span>
-                       <span>Info</span>
-                       <span>Date</span>
+                        <span>{article.actor.title}</span>
+                        <span>{article.actor.description}</span>
+                        <span>{article.actor.date.toDate().toLocaleDateString()}</span>
                       </div>
                     </a>
 
                     <button>
                       <img src="/images/ellipsis.png" alt=""></img>
                     </button>
-
-
                   </SharedActor>
 
-
-
-                  <Description>Descriptionnn</Description>
+                  <Description>{article.description}</Description>
                   <SharedImg>
                     <a>
-                      <img src="/images/shashikumar.jpg" alt=""></img>
+                        {
+                           !article.sharedImg  && article.video ?  (
+                              <ReactPlayer width={"100%"} url={article.video}/>
+                           )      :  (
+
+                            article.sharedImg && <img src={article.sharedImg}></img>
+                           )
+                            
+                        }
                     </a>
                   </SharedImg>
 
                   <SocialCounts>
                     <li>
                       <button>
-                        <img src="https:/static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb" alt=""></img>
-                        <img src="https:/static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f" alt=""></img>
+                        <img
+                          src="https:/static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb"
+                          alt=""
+                        ></img>
+                        <img
+                          src="https:/static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f"
+                          alt=""
+                        ></img>
                         <span>75</span>
                       </button>
-                        
                     </li>
 
                     <li>
-                      <a>2 comments</a>
+                      <a>{article.comments}</a>
                     </li>
                   </SocialCounts>
 
+                  <SocialActions>
+                    <button>
+                      <img src="/images/like-icon.png" alt=""></img>
+                      <span>Like</span>
+                    </button>
 
-                    <SocialActions>    
-                  <button>
-                    <img src="/images/like-icon.png" alt=""></img>
-                    <span>Like</span>
-                  </button>
+                    <button>
+                      <img src="/images/comments-icon.png" alt=""></img>
+                      <span>Comments</span>
+                    </button>
 
-                  <button>
-                    <img src="/images/comments-icon.png" alt=""></img>
-                    <span>Comments</span>
-                  </button>
+                    <button>
+                      <img src="/images/share-icon.png" alt=""></img>
+                      <span>Share</span>
+                    </button>
 
-                  <button>
-                    <img src="/images/share-icon.png" alt=""></img>
-                    <span>Share</span>
-                  </button>
-
-                  <button>
-                    <img src="/images/send-icon.png" alt=""></img>
-                    <span>Send</span>
-                  </button>
-                  
+                    <button>
+                      <img src="/images/send-icon.png" alt=""></img>
+                      <span>Send</span>
+                    </button>
                   </SocialActions>
-
-           </Article>
-         </div>
-          <PostModal showModal={showModal} handleClick={handleClick}/>
-      </Container>
-  
+                </Article>
+              ))}
+          </Content>
+          <PostModal showModal={showModal} handleClick={handleClick} />
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -220,155 +245,157 @@ const ShareBox = styled(CommonCard)`
 `;
 
 const Article = styled(CommonCard)`
-     padding:0;
-     margin:0 0 8px;
-     overflow:visible;
+  padding: 0;
+  margin: 0 0 8px;
+  overflow: visible;
 `;
-
 
 const SharedActor = styled.div`
   padding-right: 40px;
-   flex-wrap:nowrap;
-   padding:12px 16px 0;
-   margin-bottom:8px;
-   align-items:center;
-    display:flex;
+  flex-wrap: nowrap;
+  padding: 12px 16px 0;
+  margin-bottom: 8px;
+  align-items: center;
+  display: flex;
 
-    
+  a {
+    margin-right: 12px;
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    text-decoration: none;
 
-    a{
-      margin-right:12px;
-      flex-grow:1;
-      overflow:hidden;
-      display:flex;
-      text-decoration: none;
-
-      img{
-        width:48px;
-        height:40px;
-
-      }
-
-      & > div{
-        display:flex;
-        flex-direction:column;
-        flex-grow:1;
-        flex-basis:0;
-        margin-left:8px;
-        overflow: hidden;
-
-        span{
-          text-align:left;
-
-          &:first-child{           // first-child means  Title text 
-            font-size:14px;
-            font-weight: 700;
-              color:rgba(0,0,0,1);
-          }
-
-          &:nth-child(n+1){
-            font-size: 12px;
-            color: rgba(0,0,0,0.6);
-
-
-          }
-        }
-
-      }
+    img {
+      width: 48px;
+      height: 40px;
     }
 
+    & > div {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-basis: 0;
+      margin-left: 8px;
+      overflow: hidden;
 
-    button{
-    position:absolute;
-     right: 12px;
-     top:0;
-     background:transparent;
-     border:none;
-     outline: none;
-      
-       img{
-          width:25px;           
-       }
-     } 
+      span {
+        text-align: left;
 
+        &:first-child {
+          // first-child means  Title text
+          font-size: 14px;
+          font-weight: 700;
+          color: rgba(0, 0, 0, 1);
+        }
+
+        &:nth-child(n + 1) {
+          font-size: 12px;
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 12px;
+    top: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    img {
+      width: 25px;
+    }
+  }
 `;
 
+const Description = styled.div`
+  padding: 0 16px;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 14px;
+  text-align: left;
+`;
 
-
-
-
- const Description = styled.div`
-      padding:0 16px;
-      overflow: hidden;
-      color:rgba(0,0,0,0.9);
-     font-size:14px;
-      text-align:left;
- `;
-
- const SharedImg = styled.div`
-      margin-top: 8px;
-      width: 100%;
-      display: block;
-      position:relative;
-      background-color: #f9fafb;
-      img{
-        object-fit:contain;
-        width:100%;
-        height:100%;
-      }
+const SharedImg = styled.div`
+  margin-top: 8px;
+  width: 100%;
+  display: block;
+  position: relative;
+  background-color: #f9fafb;
+  img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const SocialCounts = styled.ul`
- line-height:1.3;
- display: flex;
- align-items: flex-start;
- overflow: auto;
- margin:0 16px;
- padding:8px 0;
- border-bottom:1px solid #e9e5de;
- list-style:none;
- li{
-   margin-right:5px;
-   font-size:12px;
-   button{
-     display: flex;
-   }
- }
+  line-height: 1.3;
+  display: flex;
+  align-items: flex-start;
+  overflow: auto;
+  margin: 0 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e9e5de;
+  list-style: none;
+  li {
+    margin-right: 5px;
+    font-size: 12px;
+    button {
+      display: flex;
+      border: none;
+      background-color:white;
+    }
+  }
 `;
-
 
 const SocialActions = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  min-height: 40px;
+  padding: 4px 8px;
 
-   align-items: center;
-   display:flex;
-   justify-content: flex-start;
-   margin:0;
-   min-height: 40px;
-   padding:4px 8px;
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px;
+    color:#0a66c2;
+    border:none;
+    background-color:white;
 
-   button{
-     display:inline-flex;
-     align-items: center;
-     padding:8px;
-     color:#0a66c2;
+    img {
+      width: 30px;
+    }
 
-     img{
-        width:30px;
-    
-     }
-
-     @media(min-width:768px){
-
-        span{
-          margin-left:8px;
-        }
-
-     }
-   }
-
-
+    @media (min-width: 768px) {
+      span {
+        margin-left: 8px;
+      }
+    }
+  }
 `;
 
+const Content = styled.div`
+  text-align: center;
+  & > img {
+    width: 30px;
+  }
+`;
 
+const mapStateToProps = (state) => {
+  return {
+    loading: state.articleState.loading,
+    user: state.userState.user,
+    articles: state.articleState.articles,
+  };
+};
 
-export default Main;
+const mapDispatchToProps = (dispatch) => ({
+  getArticles: () => dispatch(getArticleAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

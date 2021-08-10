@@ -8,9 +8,10 @@ const Header = (props) => {
     <Container>
       <Content>
         <Logo>
-          <a href="/home">
+           <a href="/home">
             <img src="/images/home-logo.svg" alt=""></img>
-          </a>
+          </a> 
+          
         </Logo>
         <Search>
           <div>
@@ -220,7 +221,8 @@ const NavList = styled.li`
   &:active {
     a {
       span {
-        color: rgba(0, 0, 0, 0.9);
+       color:blue; // color: rgba(0, 0, 0, 0.9);
+       cursor:pointer;
       }
     }
   }
@@ -260,6 +262,7 @@ const User = styled(NavList)`         // borrowing styling from Navlist
       align-items: center;
       display: flex;
       justify-content: center;
+      cursor:pointer;
     }
   }
 `;
