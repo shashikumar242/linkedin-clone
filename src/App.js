@@ -45,3 +45,12 @@ const mapDispatchToProps = (dispatch)=> ({
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);
 
+
+// React Linkedin clone App with Redux, Hooks,styled-components, firebase.
+
+// The project has all the features including:
+
+//     Good  UI/Ux designed with styled-components.
+//     The app handles authentication with firebase.
+//     The app lets posting of stories in the Newsfeed and data is stored in firebase.
+//     Real-time database with Firebase’s Firestore
